@@ -34,15 +34,17 @@ Router.get('/:song_name', (req, res, next) => {
 */
 Router.get('/artist/:artist_name', (req, res, next) => {
   let artistName = req.params.artist_name; 
-  console.log(artistName);
   return songController.getByArtist(artistName)
   .then(rows => res.json(rows))
-  .catch(err => genericError(err, 'artist/:arist_name', res));
+  .catch(err => genericError(err, 'artist/:artist_name', res));
 });
 
 Router.get('/album/:album_name', (req, res, next) => {
-  return null;
-})
+  let albumName = req.params.album_name; 
+  return songController.getByAlbum(albumName)
+  .then(rows => res.json(rows))
+  .catch(err => genericError(err, '/album/:album_name', res));
+});
 
 /**
  * Get all the songs in this album by this artist

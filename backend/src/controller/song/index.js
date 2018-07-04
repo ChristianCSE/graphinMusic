@@ -1,11 +1,12 @@
 'use strict';
 import { getSQL } from './../../database/mysql';
 import { artistController } from '../artist';
+import { albumController } from '../album';
 const songController = {};
 
 
 const wrapPromises = (sqlRows, query, fieldArr) => {
-  const promises = [];
+  let promises = [];
   sqlRows.map( (row) => {
     let allFields = [];
     for(let i = 0; i < fieldArr.length; i++){
@@ -38,18 +39,19 @@ songController.getBySong = (songName) => {
 songController.getByArtist = (artistName) => {
   //need artist id and then need need to get songs by artist_id 
   return artistController.getArtist(artistName)
-  .then(artists => {
-    const artistQ = 'SELECT * from song where artist_id = ?';
-    let artistPromises = [];
-    artists.map(row => artistPromises.push( getSQL(artistQ, row.id) ) );
-    return Promise.all(wrapPromises(artists, artistQ, ));
+  .then( (artists) => {
+    const artistQ = 'SELECT * FROM song WHERE artist_id = ?';
+    return Promise.all( wrapPromises(artists, artistQ, ['id'] ));
   })
 };
 
 songController.getByAlbum = (albumName) => {
-  //need album id (multiple albums with same name)
-
-}
+  return albumController.getByAlbum(albumName)
+  .then(albums => {
+    const albumQ = `SELECT * FROM song WHERE album_id = ?`;
+    return Promise.all( wrapPromises( albums, albumQ, ['id'] ) );
+  })
+};
 
 
 module.exports = {
