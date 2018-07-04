@@ -35,10 +35,6 @@ songController.getByArtist = (artistName) => {
 }
 
 
-// songController.getArtist = (name) => {
-//   const artistQ = "SELECT * FROM artist where name = ?";
-//   return getSQL(artistQ, name);
-// }
 
 module.exports = {
   songController

@@ -28,29 +28,3 @@ module.exports = {
   pool, 
   getSQL
 }
-
-// const connection = {
-//   query: function() {
-    
-//     let queryArgs = Array.prototype.slice.call(arguments), 
-//       events = [], 
-//       eventNameIndex = {}; 
-      
-//     pool.getConnection((err, conn) =>{
-//       if(err && eventNameIndex.error) eventNameIndex.error();
-//       if(conn) {
-//         let q = conn.query.apply(conn, queryArgs);
-//         q.on('end', () => { conn.release(); });
-//         events.forEach((args) => { q.on.apply(q, args); });
-//       }
-//     });
-
-//     return {
-//       on : function(eventName, callback) {
-//         events.push(Array.prototype.slice.call(arguments)); 
-//         eventNameIndex[eventName] = callback; 
-//         return this;
-//       }
-//     }
-//   }
-// }
