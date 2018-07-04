@@ -4,6 +4,18 @@ import { artistController } from '../artist';
 const songController = {};
 
 
+const wrapPromises = (sqlRows, query, fieldArr) => {
+  const promises = [];
+  sqlRows.map( (row) => {
+    let allFields = [];
+    for(let i = 0; i < fieldArr.length; i++){
+      allFields.push(row[fieldArr[i]]);
+    }
+    promises.push(getSQL(query, allFields));
+  })
+  return promises;
+}
+
 /**
  * Expensive
 */
@@ -30,10 +42,14 @@ songController.getByArtist = (artistName) => {
     const artistQ = 'SELECT * from song where artist_id = ?';
     let artistPromises = [];
     artists.map(row => artistPromises.push( getSQL(artistQ, row.id) ) );
-    return Promise.all(artistPromises);
+    return Promise.all(wrapPromises(artists, artistQ, ));
   })
-}
+};
 
+songController.getByAlbum = (albumName) => {
+  //need album id (multiple albums with same name)
+
+}
 
 
 module.exports = {
