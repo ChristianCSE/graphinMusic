@@ -9,9 +9,9 @@ artistController.getAll = () => {
   return getSQL(allQ);
 }
 
-artistController.getArtist = (name) => {
+artistController.getArtist = (artistName) => {
   const artistQ = "SELECT * FROM artist where name = ?";
-  return getSQL(artistQ, name);
+  return getSQL(artistQ, artistName);
 }
 
 module.exports = {

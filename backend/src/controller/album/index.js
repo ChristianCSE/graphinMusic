@@ -15,12 +15,10 @@ albumController.getByArtist = (artistName) => {
   .then(artist => {
     //multiple artist may have the same name
     const getBySingleArtist = 'SELECT * FROM album where artist_id=?';
-    artist = artist.map((row) => getSQL(getBySingleArtist, row.id));
+    let artistPromises = [];
+    artist.map((row) => artistPromises.push( getSQL(getBySingleArtist, row.id )) );
     return Promise.all(artist);
-  }).catch(err => {
-    console.log('albumCx.getByArtist: ', err);
-    throw Error('albumCx.getByArtist: ', err);
-  })
+  });
 }
 
 module.exports = {

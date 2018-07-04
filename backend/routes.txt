@@ -1,0 +1,54 @@
+
+
+
+
+API 
+Most expensive routes are /all routes, in particular 
+the song route is the most expensive route (apart from
+some of the join routes)
+
+
+
+[/artist/album/song]
+
+=======
+/album|
+=======
+|obvious routes|
+album/all
+album/:album_name
+
+album/artist/:artist_name
+album/song/:song_name
+album/artist/:artist_name/song/:song
+
+|error route|
+album/*
+
+=======
+/artist| 
+=======
+|obvious routes|
+artist/all
+artist/:artist_name 
+
+
+artist/album/:album_name
+artist/song/:song_name
+artist/album/:album_name/song/:song_name
+
+|error route|
+artist/*
+
+=======
+/song |
+=======
+|obvious routes|
+song/all
+song/:song_name
+
+song/artist/:artist_name
+song/album/:album
+song/artist/:artist_name/album/:album_name
+|error route|
+song/*
