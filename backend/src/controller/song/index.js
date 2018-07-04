@@ -18,7 +18,7 @@ const wrapPromises = (sqlRows, query, fieldArr) => {
 }
 
 /**
- * Expensive
+ * Expensive (should this return all this info?)
 */
 songController.getAll = () => {
   const allQ = `
@@ -51,6 +51,14 @@ songController.getByAlbum = (albumName) => {
     const albumQ = `SELECT * FROM song WHERE album_id = ?`;
     return Promise.all( wrapPromises( albums, albumQ, ['id'] ) );
   })
+};
+
+songController.getByArtistAlbum = (artistName, albumName) => {
+  const artistAlbumQ = `
+  SELECT song.name, song.track_number FROM song, artist ar, album al
+  WHERE ar.name =? AND al.name = ?
+  AND song.artist_id = ar.id AND song.album_id = al.id`; 
+  return getSQL(artistAlbumQ, [artistName, albumName]);
 };
 
 

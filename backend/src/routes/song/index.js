@@ -39,6 +39,9 @@ Router.get('/artist/:artist_name', (req, res, next) => {
   .catch(err => genericError(err, 'artist/:artist_name', res));
 });
 
+/**
+ * 
+*/
 Router.get('/album/:album_name', (req, res, next) => {
   let albumName = req.params.album_name; 
   return songController.getByAlbum(albumName)
@@ -50,7 +53,11 @@ Router.get('/album/:album_name', (req, res, next) => {
  * Get all the songs in this album by this artist
 */
 Router.get('/artist/:artist_name/album/:album_name', (req, res, next) => {
-  return null;
+  let artistName = req.params.artist_name;
+  let albumName = req.params.album_name;
+  return songController.getByArtistAlbum(artistName, albumName)
+  .then(rows => res.json(rows))
+  .catch(err => genericError(err, '/artist/:artist_name/album/:album_name', res));
 });
 
 
