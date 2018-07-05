@@ -1,5 +1,3 @@
-
-
 const express = require('express');
 
 let artist = require('./artist');

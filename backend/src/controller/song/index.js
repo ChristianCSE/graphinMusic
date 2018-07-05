@@ -2,20 +2,8 @@
 import { getSQL } from './../../database/mysql';
 import { artistController } from '../artist';
 import { albumController } from '../album';
+import { wrapPromises } from '../../utils/utils';
 const songController = {};
-
-
-const wrapPromises = (sqlRows, query, fieldArr) => {
-  let promises = [];
-  sqlRows.map( (row) => {
-    let allFields = [];
-    for(let i = 0; i < fieldArr.length; i++){
-      allFields.push(row[fieldArr[i]]);
-    }
-    promises.push(getSQL(query, allFields));
-  })
-  return promises;
-}
 
 /**
  * Expensive (should this return all this info?)
@@ -38,10 +26,11 @@ songController.getBySong = (songName) => {
 
 songController.getByArtist = (artistName) => {
   //need artist id and then need need to get songs by artist_id 
-  return artistController.getArtist(artistName)
+  return artistController.getByArtist(artistName)
   .then( (artists) => {
     const artistQ = 'SELECT * FROM song WHERE artist_id = ?';
-    return Promise.all( wrapPromises(artists, artistQ, ['id'] ));
+    const fields = ['id'];
+    return Promise.all( wrapPromises(artists, artistQ, fields ));
   })
 };
 
@@ -49,13 +38,15 @@ songController.getByAlbum = (albumName) => {
   return albumController.getByAlbum(albumName)
   .then(albums => {
     const albumQ = `SELECT * FROM song WHERE album_id = ?`;
-    return Promise.all( wrapPromises( albums, albumQ, ['id'] ) );
+    const fields = ['id'];
+    return Promise.all( wrapPromises( albums, albumQ, fields ) );
   })
 };
 
 songController.getByArtistAlbum = (artistName, albumName) => {
   const artistAlbumQ = `
-  SELECT song.name, song.track_number FROM song, artist ar, album al
+  SELECT song.* 
+  FROM song, artist ar, album al
   WHERE ar.name =? AND al.name = ?
   AND song.artist_id = ar.id AND song.album_id = al.id`; 
   return getSQL(artistAlbumQ, [artistName, albumName]);

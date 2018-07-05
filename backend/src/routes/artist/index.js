@@ -3,47 +3,44 @@
 // import require from 'express';
 import * as express from 'express';
 import { artistController } from '../../controller/artist';
+import { genericError } from '../../utils/error';
+
 const Router = express.Router();
 
-/**
- * 
-*/
-Router.get('/', (req, res, next) => {
+Router.get('/all', (req, res, next) => {
   return artistController.getAll()
-  .then(row => Promise.resolve(res.json(row)));
+  .then(row => res.json(row))
+  .catch(err => genericError(err, '/all', res));
 });
 
-/**
- * 
-*/
 Router.get('/:artist_name', (req, res, next) => {
   const artistName = req.params.artist_name;
-  return artistController.getArtist(artistName)
-  .then(row => res.json(row));
+  return artistController.getByArtist(artistName)
+  .then(row => res.json(row))
+  .catch(err => genericError(err, '/:artist_name', res));
 });
 
 
 Router.get('/album/:album_name', (req, res, next) => {
-  return null;
-})
+  const albumName = req.params.album_name;
+  return artistController.getByAlbum(albumName)
+  .then(row => res.json(row))
+  .catch(err => genericError(err, '/album/:album_name', res));
+});
 
 Router.get('/song/:song_name', (req, res, next) => {
   let songName = req.params.song_name;
-  return null;
-})
+  return artistController.getBySong(songName)
+  .then(row => res.json(row))
+  .catch(err => genericError(err, '/song/:song_name', res));
+});
 
 Router.get('/album/:album_name/song/:song_name', (req, res, next) => {
   let albumName = req.params.album_name;
   let songName = req.params.song_name;
-  return null;
-})
-
-/**
- * 
-*/
-Router.get('/*', (req, res, next) => {
-  return res.json({"Error" : "Path DNE"});
-})
-
+  return artistController.getByAlbumSong(albumName, songName)
+  .then(row => res.json(row))
+  .catch(err => genericError(err, '/album/:album_name/song/:song_name', res));
+});
 
 module.exports = Router;
