@@ -12,7 +12,7 @@ artistController.getAll = () => {
 };
 
 artistController.getByArtist = (artistName) => {
-  console.log('artistController.getByArtist', artistName);
+  console.log('====>>>>>>artistController.getByArtist', artistName);
   const artistQ = `SELECT * FROM artist where name = ?`;
   return getSQL(artistQ, artistName);
 };
@@ -47,4 +47,4 @@ artistController.getByAlbumSong = (albumName, songName) => {
   return getSQL(albumSongQ, [albumName, songName]);
 };
 
-module.exports = { artistController };
+export { artistController };

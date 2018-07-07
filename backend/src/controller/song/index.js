@@ -49,4 +49,4 @@ songController.getByArtistAlbum = (artistName, albumName) => {
 };
 
 
-module.exports = { songController };
+export { songController };

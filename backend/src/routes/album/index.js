@@ -20,7 +20,7 @@ Router.get('/:album_name', (req, res, next) => {
 })
 
 Router.get('/artist/:artist_name', (req, res, next) => {
-  const artistName = req.params.artist;
+  const artistName = req.params.artist_name;
   return albumController.getByArtist(artistName)
   .then(row => res.json(row))
   .catch(err => genericError(err, '/artist/:artist_name', res));
@@ -37,7 +37,7 @@ Router.get('/song/:song_name', (req, res, next) => {
 Router.get('/artist/:artist_name/song/:song_name', (req, res, next) => {
   let artistName = req.params.artist_name;
   let songName = req.params.song_name; 
-  return albumController.getByArtistAlbum(artistName, songName)
+  return albumController.getByArtistSong(artistName, songName)
   .then(row => res.json(row))
   .catch(err => genericError(err, '/artist/:artist_name/song/:song_name', res));
 });

@@ -22,7 +22,9 @@ albumController.getByAlbum = (albumName) => {
 };
 
 albumController.getByArtist = (artistName) => {
+  console.log('artistName=>', artistName);
   console.log('albumController.getByArtist = (artistName) => {', artistController);
+  console.log('albumController.getByArtist = (artistName) => {', artistController.getByArtist);
   return artistController.getByArtist(artistName)
   .then((artists) => {
     //multiple artist may have the same name
@@ -56,5 +58,5 @@ albumController.getByArtistSong = (artistName, songName) => {
 };
 
 
-module.exports = { albumController };
+export { albumController };
 
