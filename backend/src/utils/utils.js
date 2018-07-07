@@ -4,6 +4,7 @@
  * fieldArr: array of strings defining the fields we want from sqlRows in our new query
  * return: any array of promises 
 */
+import { getSQL } from '../database/mysql';
 const wrapPromises = (sqlRows, query, fieldArr) => {
   let promises = [];
   sqlRows.map( (row) => {

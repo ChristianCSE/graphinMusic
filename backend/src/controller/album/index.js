@@ -1,5 +1,5 @@
 'use strict';
-import { artistController } from '../artist/';
+import { artistController } from '../artist';
 import { songController } from '../song';
 import { getSQL } from './../../database/mysql';
 import { wrapPromises } from '../../utils/utils';
@@ -10,18 +10,21 @@ const albumController = {};
 //then making a join (the join should ultimately be more expensive, but we need to make sure)
 
 albumController.getAll = () => {
+  console.log('albumController.getAll = () => {');
   const allQ = 'SELECT * FROM album';
   return getSQL(allQ);
 };
 
 albumController.getByAlbum = (albumName) => {
+  console.log('albumController.getByAlbum = (albumName) => {');
   const albumQ = `SELECT * FROM album WHERE name = ?`;
   return getSQL(albumQ, albumName);
 };
 
 albumController.getByArtist = (artistName) => {
+  console.log('albumController.getByArtist = (artistName) => {', artistController);
   return artistController.getByArtist(artistName)
-  .then(artists => {
+  .then((artists) => {
     //multiple artist may have the same name
     const artistQ = `SELECT * FROM album where artist_id=?`;
     let fields = ['id'];
@@ -30,15 +33,18 @@ albumController.getByArtist = (artistName) => {
 };
 
 albumController.getBySong = (songName) => {
+  console.log('albumController.getBySong = (songName) => {');
   return songController.getBySong(songName)
-  .then(songs => {
-    let songQ = `SELECT * FROM album where album_id = ?`;
-    let fields = ['album_id'];
+  .then((songs) => {
+    //album id is not unique! 
+    let songQ = `SELECT * FROM album where id = ? and artist_id = ?`;
+    let fields = ['album_id', 'artist_id'];
     return Promise.all( wrapPromises(songs, songQ, fields) );
   });
 };
 
 albumController.getByArtistSong = (artistName, songName) => {
+  console.log('albumController.getByArtistSong = (artistName, songName) => {');
   const artistSongQ = `
   SELECT album.* 
   FROM album, 
@@ -49,6 +55,6 @@ albumController.getByArtistSong = (artistName, songName) => {
   return getSQL(artistSongQ, [artistName, songName]);
 };
 
-module.exports = {
-  albumController
-}
+
+module.exports = { albumController };
+

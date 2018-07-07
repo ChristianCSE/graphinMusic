@@ -3,8 +3,6 @@ import { albumController } from '../album';
 import { songController } from '../song';
 import { getSQL } from './../../database/mysql';
 import { wrapPromises } from '../../utils/utils';
-import { wrap } from 'module';
-
 const artistController = {};
 
 
@@ -14,13 +12,16 @@ artistController.getAll = () => {
 };
 
 artistController.getByArtist = (artistName) => {
+  console.log('artistController.getByArtist', artistName);
   const artistQ = `SELECT * FROM artist where name = ?`;
   return getSQL(artistQ, artistName);
 };
 
 artistController.getByAlbum = (albumName) => {
+  
+  console.log('albumName', albumName);
   return albumController.getByAlbum(albumName)
-  .then( albums => {
+  .then((albums) => {
     const albumQ = `SELECT * FROM artist where id =?`;
     const fields = ['artist_id'];
     return Promise.all(wrapPromises(albums, albumQ, fields));
@@ -29,7 +30,7 @@ artistController.getByAlbum = (albumName) => {
 
 artistController.getBySong = (songName) => {
   return songController.getBySong(songName)
-  .then( songs => {
+  .then((songs) => {
     const songQ = `SELECT * FROM artist where id = ?`;
     const fields = ['artist_id'];
     return Promise.all( wrapPromises(songs, songQ, fields) );
@@ -44,8 +45,6 @@ artistController.getByAlbumSong = (albumName, songName) => {
     (select artist_id from song where name = 'Lean 4 Real') song
     WHERE album.artist_id = artist.id AND song.artist_id = artist.id`;
   return getSQL(albumSongQ, [albumName, songName]);
-}
+};
 
-module.exports = {
-  artistController
-}
+module.exports = { artistController };

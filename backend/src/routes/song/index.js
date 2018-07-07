@@ -30,6 +30,7 @@ Router.get('/:song_name', (req, res, next) => {
 */
 Router.get('/artist/:artist_name', (req, res, next) => {
   let artistName = req.params.artist_name; 
+  console.log('in route: ', artistName);
   return songController.getByArtist(artistName)
   .then(row => res.json(row))
   .catch(err => genericError(err, 'artist/:artist_name', res));

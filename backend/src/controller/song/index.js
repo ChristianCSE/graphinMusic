@@ -1,7 +1,7 @@
 'use strict';
+import { artistController } from './../artist';
+import { albumController } from './../album';
 import { getSQL } from './../../database/mysql';
-import { artistController } from '../artist';
-import { albumController } from '../album';
 import { wrapPromises } from '../../utils/utils';
 const songController = {};
 
@@ -9,14 +9,9 @@ const songController = {};
  * Expensive (should this return all this info?)
 */
 songController.getAll = () => {
-  const allQ = `
-  select art.name, alb.name, song.name, song.track_number 
-  from artist art, album alb, song
-  where 
-  art.id = alb.artist_id and 
-  art.id = song.artist_id`;
+  const allQ = `SELECT * FROM song`;
   return getSQL(allQ);
-}
+};
 
 songController.getBySong = (songName) => {
   //more than likely there is more than one song with this name 
@@ -35,8 +30,9 @@ songController.getByArtist = (artistName) => {
 };
 
 songController.getByAlbum = (albumName) => {
+  console.log('getByAlbum', albumController);
   return albumController.getByAlbum(albumName)
-  .then(albums => {
+  .then((albums) => {
     const albumQ = `SELECT * FROM song WHERE album_id = ?`;
     const fields = ['id'];
     return Promise.all( wrapPromises( albums, albumQ, fields ) );
@@ -53,6 +49,4 @@ songController.getByArtistAlbum = (artistName, albumName) => {
 };
 
 
-module.exports = {
-  songController
-}
+module.exports = { songController };
