@@ -1,23 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-//react-router-redux is deprecated 
-import { BrowserRouter as Router, Route } from 'react-router-redux';
-//import { ConnectedRouter } from 'connected-react-router';
-// import { NavigationRouting } from './App';
-const NavigationRouting = require('./App');
-// import { Store, history } from './store';
-const myStore = require('./store.js');
-console.log(myStore);
+import { BrowserRouter as Router } from 'react-router-dom';
+import NavigationRouting from './components/mainPage/index.js';
+import store from './store.js';
 
-//<Router history = {myStore.history}>
-//</Router>
 const root = (
-  <Provider store={myStore.store}>
+  <Provider store ={store}>
     <Router>
       <NavigationRouting />
     </Router>
   </Provider> 
-)
+);
 
 ReactDOM.render(root, document.getElementById('root'));

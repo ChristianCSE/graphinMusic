@@ -14,29 +14,52 @@ class DummyComponent extends Component {
       <div>Nothing</div>
     );
   }
+};
+
+const RoutingLinks = (props) => {
+  return (
+    <Grid.Column width = {2}>
+      <Menu fluid vertical tabular>
+        <Menu.Item as={NavLink} to={`/`} >
+          Main Menu
+        </Menu.Item>
+      </Menu> 
+    </Grid.Column>
+  );
+}
+
+const DummyComp = (props='nothing') => () => <DummyComponent {...this.props} serving={'blah'} />
+
+const Routing = (props='nothing') => {
+  return (
+    <Grid.Column stretched width={14}>
+      <Segment>
+        <Switch>
+          <Route 
+            exact path='/' 
+            //render={ () => <DummyComponent {...this.props} serving={'blah'}/> } 
+            render={DummyComp('...this.props')}
+          />
+        </Switch>
+      </Segment>
+    </Grid.Column>
+  );
 }
 
 
+
 class NavigationRouting extends Component {
-  
-  render() {
-    return(  
+  render(){
+    return(
       <Grid>
-        <Grid.Column width={2}>
-          <Switch>
-            <Route 
-              path='/*'
-              render={() => <DummyComponent />}
-            />
-          </Switch>
-        </Grid.Column>
+        <RoutingLinks />
+        <Routing />
       </Grid>
     );
   }
 }
+
 //need to do mapping
 //const conn = connect(mapStateToProps, mapDispatchToProps, null, {pure: false})(NavigationRouting);
 
-export default {
-  NavigationRouting
-};
+export default NavigationRouting;
